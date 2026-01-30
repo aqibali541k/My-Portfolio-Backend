@@ -45,12 +45,12 @@ app.use("/users", authRouter);
 app.use("/projects", projectRouter);
 app.use("/contact", contactRouter);
 
-// app.get("/", (req, res) => {
-//   res.send("🚀 Server is online");
-// });
-
-// /* ---------- EXPORT (NO app.listen) ---------- */
-// module.exports = app;
-app.listen(process.env.PORT, () => {
-  console.log("Server is running perfectly on PORT:", process.env.PORT);
+app.get("/", (req, res) => {
+  res.send("🚀 Server is online");
 });
+
+/* ---------- EXPORT (NO app.listen) ---------- */
+module.exports = app;
+// app.listen(process.env.PORT, () => {
+//   console.log("Server is running perfectly on PORT:", process.env.PORT);
+// });
