@@ -92,8 +92,12 @@ app.use("/projects", projectRouter);
 app.use("/contact", contactRouter);
 /* ---------------- ROUTES ---------------- */
 
-app.get("/", (req, res) => {
-  res.send("server is online");
-});
+// app.get("/", (req, res) => {
+//   res.send("server is online");
+// });
 
-module.exports = app;
+// module.exports = app;
+
+app.listen(process.env.PORT, () => {
+  console.log("Server is running perfectly on PORT:", process.env.PORT);
+});

@@ -128,4 +128,26 @@ projectRouter.put(
   },
 );
 
+/* ================= DELETE PROJECT (ADMIN) ================= */
+projectRouter.delete("/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Delete image from Cloudinary if exists
+    if (project.imagePublicId) {
+      await cloudinary.uploader.destroy(project.imagePublicId);
+    }
+
+    await Project.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Project deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Project deletion failed" });
+  }
+});
+
 module.exports = projectRouter;
