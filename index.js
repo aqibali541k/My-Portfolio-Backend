@@ -36,6 +36,9 @@
 // }
 
 // // CONNECT DB IMMEDIATELY
+
+// const dns = require("node:dns");
+// dns.setServers(["8.8.8.8", "8.8.4.4"]);
 // connectDB();
 
 // app.use("/users", authRouter);
@@ -47,10 +50,10 @@
 // });
 
 // /* ---------- EXPORT (NO app.listen) ---------- */
-// module.exports = app;
-// // app.listen(process.env.PORT, () => {
-// //   console.log("Server is running perfectly on PORT:", process.env.PORT);
-// // });
+// // module.exports = app;
+// app.listen(process.env.PORT, () => {
+//   console.log("Server is running perfectly on PORT:", process.env.PORT);
+// });
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -71,6 +74,8 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+const dns = require("node:dns");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 async function connectDB() {
   if (cached.conn) return cached.conn;
 
@@ -85,7 +90,6 @@ async function connectDB() {
   return cached.conn;
 }
 
-// CONNECT DB IMMEDIATELY
 connectDB();
 app.use("/users", authRouter);
 app.use("/projects", projectRouter);

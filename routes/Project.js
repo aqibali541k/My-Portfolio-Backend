@@ -16,9 +16,9 @@ projectRouter.post(
   upload.single("image"),
   async (req, res) => {
     try {
-      const { title, description, techStack, liveUrl, githubUrl } = req.body;
+      const { title, description, techStack, liveUrl, githubUrl, category } = req.body;
 
-      if (!title || !description || !liveUrl) {
+      if (!title || !description || !liveUrl || !category) {
         return res.status(400).json({
           message: "Title, description and liveUrl are required",
         });
@@ -49,9 +49,9 @@ projectRouter.post(
         githubUrl,
         image,
         imagePublicId,
+        category,
         createdBy: req.user.id,
       });
-
       res.status(201).json({
         message: "Project created successfully",
         project,
@@ -82,19 +82,18 @@ projectRouter.put(
         return res.status(404).json({ message: "Project not found" });
       }
 
-      const { title, description, liveUrl, githubUrl, techStack } = req.body;
+      const { title, description, liveUrl, githubUrl, techStack, category } = req.body;
 
       // ✅ TEXT FIELDS
       if (title) project.title = title;
       if (description) project.description = description;
       if (liveUrl) project.liveUrl = liveUrl;
       if (githubUrl) project.githubUrl = githubUrl;
-
+      if (category) project.category = category;
       // ✅ TECH STACK (FormData string → array)
       if (techStack) {
         project.techStack = JSON.parse(techStack);
       }
-
       // ✅ IMAGE UPDATE
       if (req.file) {
         // purani image delete
@@ -114,9 +113,7 @@ projectRouter.put(
         project.image = uploadResult.secure_url;
         project.imagePublicId = uploadResult.public_id;
       }
-
       await project.save();
-
       res.json({
         message: "Project updated successfully",
         project,

@@ -14,8 +14,14 @@ const projectSchema = new mongoose.Schema(
     },
 
     techStack: {
-      type: [String], // ["React", "Node", "MongoDB"]
+      type: [String],
       default: [],
+    },
+
+    category: {
+      type: String,
+      enum: ["frontend", "backend", "full-stack"],
+      default: "frontend",
     },
 
     liveUrl: {
@@ -43,7 +49,7 @@ const projectSchema = new mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Project", projectSchema);
